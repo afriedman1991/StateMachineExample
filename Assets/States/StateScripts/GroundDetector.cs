@@ -7,6 +7,8 @@ namespace roundbeargames_tutorial
     [CreateAssetMenu(fileName = "New State", menuName = "Roundbeargames/AbilityData/GroundDetector")]
     public class GroundDetector : StateData
     {
+        [Range(0.01f, 1f)]
+        public float CheckTime;
         public float Distance;
 
         public override void OnEnter(CharacterState characterState, Animator animator, AnimatorStateInfo stateInfo)
@@ -18,13 +20,16 @@ namespace roundbeargames_tutorial
         {
             CharacterControl control = characterState.GetCharacterControl(animator);
 
-            if (IsGrounded(control))
+            if (stateInfo.normalizedTime >= CheckTime)
             {
-                animator.SetBool(TransitionParameter.Grounded.ToString(), true);
-            }
-            else
-            {
-                animator.SetBool(TransitionParameter.Grounded.ToString(), false);
+                if (IsGrounded(control))
+                {
+                    animator.SetBool(TransitionParameter.Grounded.ToString(), true);
+                }
+                else
+                {
+                    animator.SetBool(TransitionParameter.Grounded.ToString(), false);
+                }
             }
         }
 
